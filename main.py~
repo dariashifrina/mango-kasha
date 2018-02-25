@@ -6,51 +6,11 @@ K #04: Mi only nyam ital food, mon!
 
 2018-02-15  '''  
 
-import requests, json
 
 from pymongo import MongoClient
 from hashlib import sha1
 import shutil
 
-
-#-------writing json file from link--------------------------------------------------------
-filename = "black_mirror.json"
-data = requests.get("http://api.tvmaze.com/singlesearch/shows?q=black-mirror&embed=episodes")
-data = (data.text)
-f = open(filename, "w")
-f.write(data)
-f.close()
-#------------------------------------------------------------------------------------------
-
-#replace this with lisa server
-client = MongoClient('localhost', 27017)
-#replace this with lisa database name and collection
-db = client['test']
-
-
-file = open(filename, "r")
-file = file.read()
-decoded = json.loads(file)
-#print decoded
-
-#replace names 
-db.bm.insert(decoded)
-
-def get_description(season, episode):
-    episode = db.bm.find({"$and":[{"season": season}, {"number": episode}]})
-    for i in episode:
-        print i
-
-
-
-
-get_description(4, 2)
-
-
-
-
-
-'''
 client = MongoClient('lisa.stuy.edu', 27017)
 restaurant = client.test.restaurants
 
@@ -101,4 +61,3 @@ get_zipscore_restaurant('10282', 10)
 print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print("finding Mexican restaurants at zip 10282:")
 get_cuisinezip_restaurant("Mexican", "10282")
-'''
