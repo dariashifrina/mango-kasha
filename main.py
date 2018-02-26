@@ -1,10 +1,7 @@
 '''Mango Kasha: Dasha Shifrina, Karina Ionkina
-
 SoftDev2 pd7
-
-K #04: Mi only nyam ital food, mon!
-
-2018-02-15  '''  
+K #05: Import/Export Bank"
+2018-02-25  '''  
 
 import requests, json
 
@@ -43,6 +40,9 @@ decoded = json.loads(file)
 db.mv.insert(decoded)
 
 def get_movies(year):
+    '''
+    prints a list of movies from the given year
+    '''
     movies = db.mv.find({"year": year})
     for i in movies:
         print i["title"]
@@ -52,23 +52,77 @@ def get_movies(year):
 #get_movies(2014)
 
 
-#returns year and title of film the actor was cast in
+
 def get_starred_films(actor):
+    '''
+    prints the year and title of films this actor
+    was cast in
+    '''
     films = db.mv.find({"cast": actor})
     for i in films:
         print i["title"] 
     return films
+
 #TO_DO: WHY IS THIS  NOT WORKING
 #get_starred_films("Jennifer Lawrence")
 
+
+
 def get_director_films(director):
+    '''
+    given director name, this fxn prints the title and year 
+    of the director's movies
+    '''
     films = db.mv.find({"director": director})
     for i in films:
-        print i['title']
+        print   i['title']  + " " + str(i['year'])
     return films
-#yay this works
-get_director_films("Quentin Tarantino")
 
+#works but loops
+#get_director_films("Quentin Tarantino")
+
+
+def genre_year(genre, year):
+    '''
+    given a genre and a year, this returns movies
+    that fulfill both requirements
+    '''
+    films = db.mv.find({"$and":[{"genre": genre}, {"year": year}]})
+    for i in films:
+        print i["title"]
+    return films
+
+#works but repeats
+#genre_year("Crime", 1987)
+
+
+def movies_past_year(year):
+    '''
+    prints a list of movies that were premiered past a certain year
+    '''
+    films = db.mv.find({"year": {"$gt": year}})
+    for i in films:
+        print i["title"] + " " + str(i['year'])
+    return films
+
+#movies_past_year(2015)
+
+def movie_info(title):
+    '''
+    given a movie title, this prints a list
+    of information including the director,
+    cast, and year
+    '''
+    film = db.mv.find_one({"title": title})
+    print "DIRECTOR: "
+    print film['director']
+    print "CAST: " 
+    print film['cast']
+    print "YEAR: "
+    print film['year']
+    return film
+
+#movie_info("Pulp Fiction")
 
 
 '''
