@@ -48,9 +48,9 @@ f.close()
 #------------------------------------------------------------------------------------------
 
 #replace this with lisa server
-client = MongoClient('localhost', 27017)
+client = MongoClient('lisa.stuy.edu', 27017)
 #replace this with lisa database name and collection
-db = client['test']
+db = client.test.movies
 
 
 file = open(filename, "r")
