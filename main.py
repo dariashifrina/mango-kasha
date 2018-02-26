@@ -58,8 +58,16 @@ def get_starred_films(actor):
     for i in films:
         print i["title"] 
     return films
+#TO_DO: WHY IS THIS  NOT WORKING
+#get_starred_films("Jennifer Lawrence")
 
-get_starred_films("Jennifer Lawrence")
+def get_director_films(director):
+    films = db.mv.find({"director": director})
+    for i in films:
+        print i['title']
+    return films
+#yay this works
+get_director_films("Quentin Tarantino")
 
 
 
