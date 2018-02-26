@@ -1,16 +1,151 @@
 '''Mango Kasha: Dasha Shifrina, Karina Ionkina
-
 SoftDev2 pd7
+K #05: Import/Export Bank"
+2018-02-25  '''  
 
-K #04: Mi only nyam ital food, mon!
+'''
+We used an American movies json file. 
+For each movie it contains the movie:
+- Title
+- Director
+- Year
+- Cast
+- Genre
+- Notes
 
-2018-02-15  '''  
+The download link is: https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/movies.json 
 
+Our import mechanism was using requests to write a json file, then read the file and use db.collection.insert(file_content)
 
+Our functions are:
+- get_movies(year)
+- get_starred_films(actor)
+- get_director_films(director)
+- genre_year(genre, year)
+- 
+
+import requests, json
 from pymongo import MongoClient
 from hashlib import sha1
 import shutil
 
+#ascii errors
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+
+#-------writing json file from link--------------------------------------------------------
+filename = "movies.json"
+data = requests.get("https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/movies.json")
+data = (data.text)
+
+f = open(filename, "w")
+f.write(data)
+f.close()
+#------------------------------------------------------------------------------------------
+
+#replace this with lisa server
+client = MongoClient('localhost', 27017)
+#replace this with lisa database name and collection
+db = client['test']
+
+
+file = open(filename, "r")
+file = file.read()
+decoded = json.loads(file)
+#print decoded
+
+#replace names 
+db.mv.insert(decoded)
+
+def get_movies(year):
+    '''
+    prints a list of movies from the given year
+    '''
+    movies = db.mv.find({"year": year})
+    for i in movies:
+        print i["title"]
+    return movies
+
+#returns a list of movies from 2014
+#get_movies(2014)
+
+
+
+def get_starred_films(actor):
+    '''
+    prints the year and title of films this actor
+    was cast in
+    '''
+    films = db.mv.find({"cast": actor})
+    for i in films:
+        print i["title"] 
+    return films
+
+#TO_DO: WHY IS THIS  NOT WORKING
+#get_starred_films("Jennifer Lawrence")
+
+
+
+def get_director_films(director):
+    '''
+    given director name, this fxn prints the title and year 
+    of the director's movies
+    '''
+    films = db.mv.find({"director": director})
+    for i in films:
+        print   i['title']  + " " + str(i['year'])
+    return films
+
+#works but loops
+#get_director_films("Quentin Tarantino")
+
+
+def genre_year(genre, year):
+    '''
+    given a genre and a year, this returns movies
+    that fulfill both requirements
+    '''
+    films = db.mv.find({"$and":[{"genre": genre}, {"year": year}]})
+    for i in films:
+        print i["title"]
+    return films
+
+#works but repeats
+#genre_year("Crime", 1987)
+
+
+def movies_past_year(year):
+    '''
+    prints a list of movies that were premiered past a certain year
+    '''
+    films = db.mv.find({"year": {"$gt": year}})
+    for i in films:
+        print i["title"] + " " + str(i['year'])
+    return films
+
+#movies_past_year(2015)
+
+def movie_info(title):
+    '''
+    given a movie title, this prints a list
+    of information including the director,
+    cast, and year
+    '''
+    film = db.mv.find_one({"title": title})
+    print "DIRECTOR: "
+    print film['director']
+    print "CAST: " 
+    print film['cast']
+    print "YEAR: "
+    print film['year']
+    return film
+
+#movie_info("Pulp Fiction")
+
+
+'''
 client = MongoClient('lisa.stuy.edu', 27017)
 restaurant = client.test.restaurants
 
@@ -61,3 +196,4 @@ get_zipscore_restaurant('10282', 10)
 print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 print("finding Mexican restaurants at zip 10282:")
 get_cuisinezip_restaurant("Mexican", "10282")
+'''

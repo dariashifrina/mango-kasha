@@ -3,8 +3,30 @@ SoftDev2 pd7
 K #05: Import/Export Bank"
 2018-02-25  '''  
 
-import requests, json
+'''
+We used an American movies json file. 
+For each movie it contains the movie:
+- Title
+- Director
+- Year
+- Cast
+- Genre
+- Notes
 
+The download link is: https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/movies.json 
+
+Our import mechanism was using requests to write a json file, then read the file and use db.collection.insert(file_content)
+
+Our functions are:
+- get_movies(year)
+- get_starred_films(actor)
+- get_director_films(director)
+- genre_year(genre, year)
+- movies_past_year(year)
+- movie_info(title)
+'''
+
+import requests, json
 from pymongo import MongoClient
 from hashlib import sha1
 import shutil
