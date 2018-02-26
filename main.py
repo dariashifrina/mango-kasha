@@ -12,11 +12,17 @@ from pymongo import MongoClient
 from hashlib import sha1
 import shutil
 
+#ascii errors
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 
 #-------writing json file from link--------------------------------------------------------
-filename = "black_mirror.json"
-data = requests.get("http://api.tvmaze.com/singlesearch/shows?q=black-mirror&embed=episodes")
+filename = "movies.json"
+data = requests.get("https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/movies.json")
 data = (data.text)
+
 f = open(filename, "w")
 f.write(data)
 f.close()
@@ -34,19 +40,26 @@ decoded = json.loads(file)
 #print decoded
 
 #replace names 
-db.bm.insert(decoded)
+db.mv.insert(decoded)
 
-def get_description(season, episode):
-    episode = db.bm.find({"$and":[{"season": season}, {"number": episode}]})
-    for i in episode:
-        print i
+def get_movies(year):
+    movies = db.mv.find({"year": year})
+    for i in movies:
+        print i["title"]
+    return movies
+
+#returns a list of movies from 2014
+#get_movies(2014)
 
 
+#returns year and title of film the actor was cast in
+def get_starred_films(actor):
+    films = db.mv.find({"cast": actor})
+    for i in films:
+        print i["title"] 
+    return films
 
-
-get_description(4, 2)
-
-
+get_starred_films("Jennifer Lawrence")
 
 
 
