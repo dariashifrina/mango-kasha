@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+  
+
+{% if result == null %}
+
+"No Results. Try Again"
+
+{% else if insinstance(result[0], list) %}
+
+{% for i in result %}
+{% for p in result[i] %}
+
+{{p}} <br>
+
+{% endfor %}
+<br> <br> <br>
+
+{% endfor %}
+
+{% else %}
+
+{% for i in result %}
+{{i}} <br>
+
+{% endfor %}
+{% endif %}
+
+
+</body>
+</html>

@@ -1,1 +1,56 @@
-jfkld
+<DOCTYPE! html>
+<html>
+<head>
+  <title> </title>
+</head>
+<body>
+
+<form action="/respond" methon="POST">
+
+<center>
+
+Actor name:
+<input type="text" value="actor" name="actor"></input>
+<br> <br>
+
+Director name:
+<input type="text" name="director" value="director"></input>
+<br> <br>
+Movie title:
+<input type="text" name="title" value="title"></input>
+
+<br> <br>
+Movie year:
+<select name="year" value="year">
+
+{% for i in range(1900, 2017) %}
+<option value="year"> {{i}}</option> <br>
+{% endfor %}
+</select>
+<br> <br>
+
+Genre:
+<select name="genre">
+{% for p in genres %}
+<option value="genre"> {{p}} </option>
+{% endfor %}
+</select>
+<br> <br> <br>
+
+
+Query Type:
+<select name="query" value="query">
+<option value="1"> Movie Given Year </option> 
+<option value="2"> Movies Given Actor </option> 
+<option value="3"> Movies Given Director </option> 
+<option value="4"> Movies Given Genre and Year </option> 
+<option value="5"> Movies After a Given Year </option> 
+<option value="6"> Movie Info Given Title </option> 
+</select>
+
+
+
+<input type="submit" value="Submit">
+</form>
+</body>
+</html>

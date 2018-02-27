@@ -51,8 +51,7 @@ f.close()
 client = MongoClient('lisa.stuy.edu', 27017)
 #replace this with lisa database name and collection
 db = client.test.movies
-
-
+'''
 file = open(filename, "r")
 file = file.read()
 decoded = json.loads(file)
@@ -60,15 +59,29 @@ decoded = json.loads(file)
 
 #replace names 
 db.mv.insert(decoded)
+'''
+
+def all_genres():
+    genre = db.mv.find( { "genre" : { "$exists" : True } } );
+    ret = []
+    for i in genre:
+        if i['genre'] not in ret:
+            ret.append(i['genre'])
+    return ret
+
+
+
 
 def get_movies(year):
     '''
     prints a list of movies from the given year
     '''
+    ret = []
     movies = db.mv.find({"year": year})
     for i in movies:
-        print i["title"]
-    return movies
+        if i['title'] not in ret:
+            ret.append(i["title"])
+    return ret
 
 #returns a list of movies from 2014
 #get_movies(2014)
@@ -81,9 +94,12 @@ def get_starred_films(actor):
     was cast in
     '''
     films = db.mv.find({"cast": actor})
+    ret = []
     for i in films:
-        print i["title"] 
-    return films
+        if i['title'] not in ret:
+            ret.append(i["title"])
+    return ret
+        
 
 #TO_DO: WHY IS THIS  NOT WORKING
 #get_starred_films("Jennifer Lawrence")
@@ -96,9 +112,14 @@ def get_director_films(director):
     of the director's movies
     '''
     films = db.mv.find({"director": director})
+    ret = []
     for i in films:
-        print   i['title']  + " " + str(i['year'])
-    return films
+        inner_ret = []
+        if i['title'] not in ret:
+            inner_ret.append(i['title'])
+            inner_ret.append(i['year'])
+        ret.append(inner_ret)
+    return ret
 
 #works but loops
 #get_director_films("Quentin Tarantino")
@@ -110,9 +131,11 @@ def genre_year(genre, year):
     that fulfill both requirements
     '''
     films = db.mv.find({"$and":[{"genre": genre}, {"year": year}]})
+    ret = []
     for i in films:
-        print i["title"]
-    return films
+        if i['title'] not in ret:
+            ret.append(i["title"])
+    return ret
 
 #works but repeats
 #genre_year("Crime", 1987)
@@ -123,9 +146,14 @@ def movies_past_year(year):
     prints a list of movies that were premiered past a certain year
     '''
     films = db.mv.find({"year": {"$gt": year}})
+    ret = []
     for i in films:
-        print i["title"] + " " + str(i['year'])
-    return films
+        inner_ret = []
+        if i['title'] not in ret:
+            inner_ret.append(i['title'])
+            inner_ret.append(i['year'])
+        ret.append(inner_ret)
+    return ret
 
 #movies_past_year(2015)
 
@@ -136,13 +164,14 @@ def movie_info(title):
     cast, and year
     '''
     film = db.mv.find_one({"title": title})
-    print "DIRECTOR: "
-    print film['director']
-    print "CAST: " 
-    print film['cast']
-    print "YEAR: "
-    print film['year']
-    return film
+    ret = []
+#    print "DIRECTOR: "
+    ret.append(film['director'])
+#    print "CAST: " 
+    ret.append(film['cast'])
+#    print "YEAR: "
+    ret.append(film['year'])
+    return ret
 
 #movie_info("Pulp Fiction")
 

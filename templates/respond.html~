@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+  
+  {% for i in boop %}
+  {{i}} <br> <br>
+  {% endfor %}
+
+</body>
+</html>

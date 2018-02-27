@@ -1,0 +1,55 @@
+<DOCTYPE! html>
+<html>
+<head>
+  <title> </title>
+</head>
+<body>
+
+<form>
+
+<center>
+
+Actor name:
+<input type="text" name="actor"></input>
+<br> <br>
+
+Director name:
+<input type="text" name="director"></input>
+<br> <br>
+Movie title:
+<input type="text" name="title"></input>
+
+<br> <br>
+Movie year:
+<select name="year">
+<!--
+{% for i in range(1900, 2017) %}
+<option value="{{i}}"> {{i}}</option> <br>
+{% endfor %}
+</select>
+<br> <br>
+<!--
+Genre:
+<select name="genre">
+{% for p in genres %}
+<option value="{{p}}"> {{p}} </option>
+{% endfor %}
+
+<br> <br> <br>
+
+<!--
+Query Type:
+<input type="radio" value="fxn1"> Movie Given Year </input> 
+<input type="radio" value="fxn2"> Movies Given Actor </input> 
+<input type="radio" value="fxn3"> Movies Given Director </input> 
+<input type="radio" value="fxn4"> Movies Given Genre and Year </input> 
+<input type="radio" value="fxn5"> Movies After a Given Year </input> 
+<input type="radio" value="fxn6"> Movie Info Given Title </input> 
+-->
+
+</form>
+
+
+
+</body>
+</html>

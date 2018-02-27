@@ -1,0 +1,21 @@
+from flask import Flask, session, url_for, redirect, render_template, request
+import main
+from main import *
+import os
+import urllib2
+import json
+
+#App instantiation
+app = Flask(__name__)
+app.secret_key = os.urandom(32)
+
+@app.route("/")
+def main():
+    genres = []
+    genres = all_genres()
+#    print genres
+    return render_template('index.html', genres = genres)
+
+if __name__ == "__main__":
+    app.debug = True
+    app.run()
