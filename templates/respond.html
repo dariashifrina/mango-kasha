@@ -9,7 +9,9 @@
 
 "No Results. Try Again"
 
-{% else if insinstance(result[0], list) %}
+{% elif result[0] in list %}
+
+<!--{% if insinstance(result[0], list) %}-->
 
 {% for i in result %}
 {% for p in result[i] %}
@@ -20,6 +22,7 @@
 <br> <br> <br>
 
 {% endfor %}
+{% endif %}
 
 {% else %}
 
